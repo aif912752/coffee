@@ -73,8 +73,6 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
                         // Show Error Message
                         echo "Error updating product information.";
                     }
-
-                    
                 } else {
                     echo "Sorry, there was an error uploading your file.";
                 }
@@ -94,8 +92,12 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
             if ($stmt->execute()) {
                 // Show Popup
                 echo "<script>
-        showPopup();
-    </script>";
+                function showPopup() {
+                    alert('แก้ไขข้อมูลสำเร็จ');
+                    window.location.href = 'table_product.php';
+                }
+                showPopup();
+            </script>";
             } else {
                 // Show Error Message
                 echo "Error updating product information.";
@@ -103,8 +105,6 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
         }
     }
 }
-
-
 
 
 ?>

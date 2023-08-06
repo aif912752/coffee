@@ -1,96 +1,369 @@
+<?php
+require_once('db.php');
+?>
 <!DOCTYPE html>
 <html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>My Website</title>
-  <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
-</head>
-<body>
-<div class="bg-white">
-  <header class="absolute inset-x-0 top-0 z-50">
-    <nav class="flex items-center justify-between p-6 lg:px-8" aria-label="Global">
-      <div class="flex lg:flex-1">
-        <a href="#" class="-m-1.5 p-1.5">
-          <span class="sr-only">Your Company</span>
-          <img class="h-8 w-auto" src="https://tailwindui.com/img/logos/mark.svg?color=indigo&shade=600" alt="">
-        </a>
-      </div>
-      <div class="flex lg:hidden">
-        <button type="button" class="-m-2.5 inline-flex items-center justify-center rounded-md p-2.5 text-gray-700">
-          <span class="sr-only">Open main menu</span>
-          <svg class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" aria-hidden="true">
-            <path stroke-linecap="round" stroke-linejoin="round" d="M3.75 6.75h16.5M3.75 12h16.5m-16.5 5.25h16.5" />
-          </svg>
-        </button>
-      </div>
-      <div class="hidden lg:flex lg:gap-x-12">
-        <a href="#" class="text-sm font-semibold leading-6 text-gray-900">Product</a>
-        <a href="#" class="text-sm font-semibold leading-6 text-gray-900">Features</a>
-        <a href="#" class="text-sm font-semibold leading-6 text-gray-900">Marketplace</a>
-        <a href="#" class="text-sm font-semibold leading-6 text-gray-900">Company</a>
-      </div>
-      <div class="hidden lg:flex lg:flex-1 lg:justify-end">
-        <a href="login.php" class="text-sm font-semibold leading-6 text-gray-900">Log in <span aria-hidden="true">&rarr;</span></a>
-      </div>
-    </nav>
-    <!-- Mobile menu, show/hide based on menu open state. -->
-    <div class="lg:hidden" role="dialog" aria-modal="true">
-      <!-- Background backdrop, show/hide based on slide-over state. -->
-      <div class="fixed inset-0 z-50"></div>
-      <div class="fixed inset-y-0 right-0 z-50 w-full overflow-y-auto bg-white px-6 py-6 sm:max-w-sm sm:ring-1 sm:ring-gray-900/10">
-        <div class="flex items-center justify-between">
-          <a href="#" class="-m-1.5 p-1.5">
-            <span class="sr-only">Your Company</span>
-            <img class="h-8 w-auto" src="https://tailwindui.com/img/logos/mark.svg?color=indigo&shade=600" alt="">
-          </a>
-          <button type="button" class="-m-2.5 rounded-md p-2.5 text-gray-700">
-            <span class="sr-only">Close menu</span>
-            <svg class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" aria-hidden="true">
-              <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12" />
-            </svg>
-          </button>
-        </div>
-        <div class="mt-6 flow-root">
-          <div class="-my-6 divide-y divide-gray-500/10">
-            <div class="space-y-2 py-6">
-              <a href="#" class="-mx-3 block rounded-lg px-3 py-2 text-base font-semibold leading-7 text-gray-900 hover:bg-gray-50">Product</a>
-              <a href="#" class="-mx-3 block rounded-lg px-3 py-2 text-base font-semibold leading-7 text-gray-900 hover:bg-gray-50">Features</a>
-              <a href="#" class="-mx-3 block rounded-lg px-3 py-2 text-base font-semibold leading-7 text-gray-900 hover:bg-gray-50">Marketplace</a>
-              <a href="#" class="-mx-3 block rounded-lg px-3 py-2 text-base font-semibold leading-7 text-gray-900 hover:bg-gray-50">Company</a>
-            </div>
-            <div class="py-6">
-              <a href="login.php" class="-mx-3 block rounded-lg px-3 py-2.5 text-base font-semibold leading-7 text-gray-900 hover:bg-gray-50">Log in</a>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-  </header>
 
-  <div class="relative isolate px-6 pt-14 lg:px-8">
-    <div class="absolute inset-x-0 -top-40 -z-10 transform-gpu overflow-hidden blur-3xl sm:-top-80" aria-hidden="true">
-      <div class="relative left-[calc(50%-11rem)] aspect-[1155/678] w-[36.125rem] -translate-x-1/2 rotate-[30deg] bg-gradient-to-tr from-[#ff80b5] to-[#9089fc] opacity-30 sm:left-[calc(50%-30rem)] sm:w-[72.1875rem]" style="clip-path: polygon(74.1% 44.1%, 100% 61.6%, 97.5% 26.9%, 85.5% 0.1%, 80.7% 2%, 72.5% 32.5%, 60.2% 62.4%, 52.4% 68.1%, 47.5% 58.3%, 45.2% 34.5%, 27.5% 76.7%, 0.1% 64.9%, 17.9% 100%, 27.6% 76.8%, 76.1% 97.7%, 74.1% 44.1%)"></div>
-    </div>
-    <div class="mx-auto max-w-2xl py-32 sm:py-48 lg:py-56">
-      <div class="hidden sm:mb-8 sm:flex sm:justify-center">
-        <div class="relative rounded-full px-3 py-1 text-sm leading-6 text-gray-600 ring-1 ring-gray-900/10 hover:ring-gray-900/20">
-          Announcing our next round of funding. <a href="#" class="font-semibold text-indigo-600"><span class="absolute inset-0" aria-hidden="true"></span>Read more <span aria-hidden="true">&rarr;</span></a>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="stylesheet" href="card.css">
+</head>
+<!-- ไอคอน -->
+<script src="https://cdn.lordicon.com/bhenfmcm.js"></script>
+
+<!-- tailwindcss -->
+<script src="https://cdn.tailwindcss.com"></script>
+<!-- ตัว Tab ALL -->
+<style>
+    /* Set height of body and the document to 100% to enable "full page tabs" */
+    body,
+    html {
+        height: 100%;
+        margin: 0;
+        font-family: Arial;
+    }
+
+    /* Style tab links */
+    .tablink {
+        background-color: #555;
+        color: white;
+        float: left;
+        border: none;
+        outline: none;
+        cursor: pointer;
+        padding: 14px 16px;
+        font-size: 17px;
+        width: 33.3%;
+    }
+
+    .tablink:hover {
+        background-color: #777;
+    }
+
+    /* Style the tab content (and add height:100% for full page content) */
+    .tabcontent {
+        color: white;
+        display: none;
+        padding: 100px 20px;
+        height: 100%;
+    }
+</style>
+
+<body>
+    <?php
+    // นำไฟล์ sidebar เข้ามา
+    include 'sidebar.html'; ?>
+
+    <div class="content ml-12 transform ease-in-out duration-500 pt-20 px-2 md:px-5 pb-4 ">
+
+        <button class="tablink" onclick="openPage('All', this, 'red')" id="defaultOpen">ทั้งหมด</button>
+        <button class="tablink" onclick="openPage('Drink', this, 'green')">เครื่องดื่ม</button>
+        <button class="tablink" onclick="openPage('Bakery', this, 'blue')">เบเกอรี่</button>
+
+
+        <!-- Tab All -->
+        <div id="All" class="tabcontent">
+            <div class="grid grid-cols-3 gap-4 px-8 py-8">
+
+                <?php
+                // Fetch all product data from the "product" table
+                include 'db.php';
+                $sql = "SELECT * FROM product";
+                $stmt = $conn->query($sql);
+                while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
+                    $productId = $row['id_product'];
+                    $productName = $row['product_name'];
+                    $productPrice = $row['product_price'];
+                    $productImage = $row['product_img'];
+                    $productRemaining = $row['remaining'];
+                    // Add other fields if needed
+                ?>
+                    <!-- The card for the product -->
+                    <div class="card">
+                        <div class="flex justify-end">
+                            <div class="grow-0 rounded-md shadow-sm px-2  bg-yellow-100 text-gray-900">
+                                คงเหลือ: <?php echo $productRemaining; ?>
+                            </div>
+                        </div>
+                        <div class="card-img">
+                            <img class="img" src="<?php echo $productImage; ?>">
+                        </div>
+                        <div class="card-title"><?php echo $productName; ?></div>
+
+                        <div class="card-footer">
+                            <div class="card-price"><span>$</span><?php echo $productPrice; ?></div>
+                            <!-- Add to Cart button with data-id attribute -->
+                            <button type="button" class="relative inline-flex items-center px-3 text-sm font-medium text-center bg-yellow-100 hover:bg-yellow-200 text-white focus:ring-4 focus:outline-none focus:ring-yellow-300 border border-black rounded-lg cartButton" data-id="<?php echo $productId; ?>">
+                                <lord-icon src="https://cdn.lordicon.com/slkvcfos.json" trigger="hover" colors="primary:#121331,secondary:#08a88a" style="width:50px;height:50px">
+                                </lord-icon>
+                                <span class="sr-only">Notifications</span>
+                                <!-- Show the cart item count -->
+                                <div class="absolute inline-flex items-center justify-center w-6 h-6 text-xs font-bold text-white bg-red-500 border-2 border-white rounded-full -top-2 -right-2 dark:border-gray-900 cartItemCount" style="display: none;"></div>
+                            </button>
+                        </div>
+                    </div>
+                <?php
+                } // End of while loop for products
+                ?>
+            </div>
         </div>
-      </div>
-      <div class="text-center">
-        <h1 class="text-4xl font-bold tracking-tight text-gray-900 sm:text-6xl">Data to enrich your online business</h1>
-        <p class="mt-6 text-lg leading-8 text-gray-600">Anim aute id magna aliqua ad ad non deserunt sunt. Qui irure qui lorem cupidatat commodo. Elit sunt amet fugiat veniam occaecat fugiat aliqua.</p>
-        <div class="mt-10 flex items-center justify-center gap-x-6">
-          <a href="#" class="rounded-md bg-indigo-600 px-3.5 py-2.5 text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600">Get started</a>
-          <a href="#" class="text-sm font-semibold leading-6 text-gray-900">Learn more <span aria-hidden="true">→</span></a>
+
+
+        <script>
+            // รายการสินค้าในตะกร้า
+            let cartItems = {};
+
+            // ฟังก์ชันสำหรับเพิ่มสินค้าในตะกร้า
+            function addToCart(productId) {
+                if (!cartItems[productId]) {
+                    cartItems[productId] = 1;
+                } else {
+                    cartItems[productId]++;
+                }
+            }
+
+            // ฟังก์ชันสำหรับอัปเดตจำนวนสินค้าที่แสดงในปุ่ม
+            function updateCartItemCount() {
+                const cartButtons = document.querySelectorAll('.cartButton');
+                cartButtons.forEach(button => {
+                    const cartItemCount = button.querySelector('.cartItemCount');
+                    const productId = button.dataset.id;
+
+                    if (cartItems[productId]) {
+                        cartItemCount.innerText = cartItems[productId];
+                        cartItemCount.style.display = 'inline-flex';
+                    } else {
+                        cartItemCount.innerText = '';
+                        cartItemCount.style.display = 'none';
+                    }
+                });
+            }
+
+            // การดักจับการคลิกที่ปุ่มในแท็บ All
+            const allButtons = document.querySelectorAll('#All .cartButton');
+            allButtons.forEach(button => {
+                button.addEventListener('click', () => {
+                    const productId = button.dataset.id;
+                    addToCart(productId);
+                    updateCartItemCount();
+
+
+                });
+            });
+
+            // การดักจับการคลิกที่ปุ่มในแท็บ Drink
+            const drinkButtons = document.querySelectorAll('#Drink .cartButton');
+            drinkButtons.forEach(button => {
+                button.addEventListener('click', () => {
+                    const productId = button.dataset.id;
+                    addToCart(productId);
+                    updateCartItemCount();
+                    updateAllTabItemCount(); // อัปเดตจำนวนสินค้าในแท็บ All ด้วย
+
+
+
+                });
+            });
+            // การดักจับการคลิกที่ปุ่มในแท็บ Bakery
+            const bakeryButtons = document.querySelectorAll('#Bakery .cartButton');
+            bakeryButtons.forEach(button => {
+                button.addEventListener('click', () => {
+                    const productId = button.dataset.id;
+                    addToCart(productId);
+                    updateCartItemCount();
+                });
+            });
+        </script>
+
+        <div id="Drink" class="tabcontent">
+            <div class="grid grid-cols-3 gap-4 px-8 py-8">
+
+                <?php
+                // Fetch drink product data along with their type_name from the "product" and "type" tables
+                $sql_drink = "SELECT product.*, type.type_name 
+                      FROM product
+                      INNER JOIN type ON product.id_type = type.id_type
+                      WHERE type.type_name = 'เครื่องดื่ม'";
+                $stmt_drink = $conn->prepare($sql_drink);
+                $stmt_drink->execute();
+                while ($row_drink = $stmt_drink->fetch(PDO::FETCH_ASSOC)) {
+                    $productId = $row_drink['id_product'];
+                    $productName = $row_drink['product_name'];
+                    $productPrice = $row_drink['product_price'];
+                    $productImage = $row_drink['product_img'];
+                    // Add other fields if needed
+                ?>
+                    <!-- The card for drink product -->
+                    <div class="card">
+
+                        <div class="card-img">
+                            <img class="img" src="<?php echo $productImage; ?>">
+                        </div>
+                        <div class="card-title"><?php echo $productName; ?></div>
+
+                        <div class="wrapper bg-orange-300 text-gray-800 w-70 h-12 border-2 border-gray-700 rounded-full flex items-center justify-between shadow-md px-2">
+                            <label class="btn w-full h-full rounded-full flex justify-center items-center">
+                                <input class="input hidden appearance-none" type="radio" name="btn" value="option1" checked>
+                                <span class="span text-gray-700">ร้อน</span>
+                            </label>
+                            <label class="btn w-full h-full rounded-full flex justify-center items-center">
+                                <input class="input hidden appearance-none" type="radio" name="btn" value="option2">
+                                <span class="span text-gray-700">เย็น</span>
+                            </label>
+                            <label class="btn w-full h-full rounded-full flex justify-center items-center">
+                                <input class="input hidden appearance-none" type="radio" name="btn" value="option3">
+                                <span class="span text-gray-700">ปั่น</span>
+                            </label>
+                        </div>
+
+                        <div class="card-footer">
+                            <div class="card-price"><span>$</span><?php echo $productPrice; ?></div>
+                            <!-- Add to Cart button with data-id attribute -->
+                            <button type="button" class="relative inline-flex items-center px-3 text-sm font-medium text-center bg-yellow-100 hover:bg-yellow-200 text-white focus:ring-4 focus:outline-none focus:ring-yellow-300 border border-black rounded-lg cartButton" data-id="<?php echo $productId; ?>">
+                                <lord-icon src="https://cdn.lordicon.com/slkvcfos.json" trigger="hover" colors="primary:#121331,secondary:#08a88a" style="width:50px;height:50px">
+                                </lord-icon>
+                                <span class="sr-only">Notifications</span>
+                                <!-- Show the cart item count -->
+                                <div class="absolute inline-flex items-center justify-center w-6 h-6 text-xs font-bold text-white bg-red-500 border-2 border-white rounded-full -top-2 -right-2 dark:border-gray-900 cartItemCount" style="display: none;"></div>
+                            </button>
+                        </div>
+                    </div>
+                <?php
+                } // End of while loop for drink products
+                ?>
+            </div>
         </div>
-      </div>
+
+        <div id="Bakery" class="tabcontent">
+            <div class="grid grid-cols-3 gap-4 px-8 py-8">
+                <?php
+                // Fetch bakery product data along with their type_name from the "product" and "type" tables
+                $sql_bakery = "SELECT product.*, type.type_name 
+                       FROM product
+                       INNER JOIN type ON product.id_type = type.id_type
+                       WHERE type.type_name = 'เบเกอรี่'";
+                $stmt_bakery = $conn->prepare($sql_bakery);
+                $stmt_bakery->execute();
+                while ($row_bakery = $stmt_bakery->fetch(PDO::FETCH_ASSOC)) {
+                    $productId = $row_bakery['id_product'];
+                    $productName = $row_bakery['product_name'];
+                    $productPrice = $row_bakery['product_price'];
+                    $productImage = $row_bakery['product_img'];
+                    // Add other fields if needed
+                ?>
+                    <!-- The card for bakery product -->
+                    <div class="card">
+                        <div class="card-img">
+                            <img class="img" src="<?php echo $productImage; ?>">
+                        </div>
+                        <div class="card-title"><?php echo $productName; ?></div>
+
+                        <div class="card-footer">
+                            <div class="card-price"><span>$</span><?php echo $productPrice; ?></div>
+                            <!-- Add to Cart button with data-id attribute -->
+                            <button type="button" class="relative inline-flex items-center px-3 text-sm font-medium text-center bg-yellow-100 hover:bg-yellow-200 text-white focus:ring-4 focus:outline-none focus:ring-yellow-300 border border-black rounded-lg cartButton" data-id="<?php echo $productId; ?>">
+                                <lord-icon src="https://cdn.lordicon.com/slkvcfos.json" trigger="hover" colors="primary:#121331,secondary:#08a88a" style="width:50px;height:50px">
+                                </lord-icon>
+                                <span class="sr-only">Notifications</span>
+                                <!-- Show the cart item count -->
+                                <div class="absolute inline-flex items-center justify-center w-6 h-6 text-xs font-bold text-white bg-red-500 border-2 border-white rounded-full -top-2 -right-2 dark:border-gray-900 cartItemCount" style="display: none;"></div>
+                            </button>
+                        </div>
+                    </div>
+                <?php
+                } // End of while loop for bakery products
+                ?>
+            </div>
+        </div>
+        
     </div>
-    <div class="absolute inset-x-0 top-[calc(100%-13rem)] -z-10 transform-gpu overflow-hidden blur-3xl sm:top-[calc(100%-30rem)]" aria-hidden="true">
-      <div class="relative left-[calc(50%+3rem)] aspect-[1155/678] w-[36.125rem] -translate-x-1/2 bg-gradient-to-tr from-[#ff80b5] to-[#9089fc] opacity-30 sm:left-[calc(50%+36rem)] sm:w-[72.1875rem]" style="clip-path: polygon(74.1% 44.1%, 100% 61.6%, 97.5% 26.9%, 85.5% 0.1%, 80.7% 2%, 72.5% 32.5%, 60.2% 62.4%, 52.4% 68.1%, 47.5% 58.3%, 45.2% 34.5%, 27.5% 76.7%, 0.1% 64.9%, 17.9% 100%, 27.6% 76.8%, 76.1% 97.7%, 74.1% 44.1%)"></div>
-    </div>
-  </div>
-</div>
+
+    <!-- Tab ALL ข้างบน -->
+    <script>
+        function openPage(pageName, elmnt, color) {
+            // Hide all elements with class="tabcontent" by default */
+            var i, tabcontent, tablinks;
+            tabcontent = document.getElementsByClassName("tabcontent");
+            for (i = 0; i < tabcontent.length; i++) {
+                tabcontent[i].style.display = "none";
+            }
+
+            // Remove the background color of all tablinks/buttons
+            tablinks = document.getElementsByClassName("tablink");
+            for (i = 0; i < tablinks.length; i++) {
+                tablinks[i].style.backgroundColor = "";
+            }
+
+            // Show the specific tab content
+            document.getElementById(pageName).style.display = "block";
+
+            // Add the specific color to the button used to open the tab content
+            elmnt.style.backgroundColor = color;
+        }
+
+        // Get the element with id="defaultOpen" and click on it
+        document.getElementById("defaultOpen").click();
+    </script>
+
+    <!-- ตัวเลื่อนเมนู sidebar -->
+    <script>
+        const sidebar = document.querySelector("aside");
+        const maxSidebar = document.querySelector(".max")
+        const miniSidebar = document.querySelector(".mini")
+        const roundout = document.querySelector(".roundout")
+        const maxToolbar = document.querySelector(".max-toolbar")
+        const logo = document.querySelector('.logo')
+        const content = document.querySelector('.content')
+        const moon = document.querySelector(".moon")
+        const sun = document.querySelector(".sun")
+
+        function setDark(val) {
+            if (val === "dark") {
+                document.documentElement.classList.add('dark')
+                moon.classList.add("hidden")
+                sun.classList.remove("hidden")
+            } else {
+                document.documentElement.classList.remove('dark')
+                sun.classList.add("hidden")
+                moon.classList.remove("hidden")
+            }
+        }
+
+        function openNav() {
+            if (sidebar.classList.contains('-translate-x-48')) {
+                // max sidebar 
+                sidebar.classList.remove("-translate-x-48")
+                sidebar.classList.add("translate-x-none")
+                maxSidebar.classList.remove("hidden")
+                maxSidebar.classList.add("flex")
+                miniSidebar.classList.remove("flex")
+                miniSidebar.classList.add("hidden")
+                maxToolbar.classList.add("translate-x-0")
+                maxToolbar.classList.remove("translate-x-24", "scale-x-0")
+                logo.classList.remove("ml-12")
+                content.classList.remove("ml-12")
+                content.classList.add("ml-12", "md:ml-60")
+            } else {
+                // mini sidebar
+                sidebar.classList.add("-translate-x-48")
+                sidebar.classList.remove("translate-x-none")
+                maxSidebar.classList.add("hidden")
+                maxSidebar.classList.remove("flex")
+                miniSidebar.classList.add("flex")
+                miniSidebar.classList.remove("hidden")
+                maxToolbar.classList.add("translate-x-24", "scale-x-0")
+                maxToolbar.classList.remove("translate-x-0")
+                logo.classList.add('ml-12')
+                content.classList.remove("ml-12", "md:ml-60")
+                content.classList.add("ml-12")
+
+            }
+
+        }
+    </script>
+
 </body>
+
 </html>
