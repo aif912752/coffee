@@ -20,3 +20,10 @@ module.exports = {
       require('preline/plugin'),
   ],
 }
+module.exports = {
+
+  plugins: [
+      require('flowbite/plugin')
+  ]
+
+}
