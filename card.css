@@ -40,7 +40,7 @@ then set the desired styles for .card-img. */
     position: relative;
     box-sizing: border-box;
     height: 200px;
-
+    z-index: 3;
   }
   
   .card-img .img::before {
@@ -55,7 +55,7 @@ then set the desired styles for .card-img. */
     background-repeat: no-repeat;
     background-size: 60% 10%,100% 100%,100% 65%,100% 65%,100% 50%;
     background-position: center 3px,center bottom,center bottom,center bottom,center bottom;
-    z-index: 2;
+    z-index: 3;
   }
   
   .card-img .img::after {
@@ -71,9 +71,8 @@ then set the desired styles for .card-img. */
     background-repeat: no-repeat;
     background-size: 100% 100%,100% 100%,100% 100%,100% 100%,100% 100%,100% 75%,100% 95%,100% 60%;
     background-position: center center;
-
     transform: rotate(45deg);
-    z-index: 1;
+    z-index: 3;
   }
   
   .card-title {
@@ -145,4 +144,27 @@ then set the desired styles for .card-img. */
   .card-btn:active {
     transform: translateY(3px);
   }
-  
+  /* Add media queries for responsiveness */
+@media screen and (max-width: 768px) {
+  /* Adjust card width and padding for smaller screens */
+  .card {
+    width: 100%;
+    padding: 20px;
+  }
+
+  /* Adjust image height for smaller screens */
+  .card-img .img {
+    height: 150px;
+  }
+
+  /* Add any other responsive styles as needed */
+}
+
+@media screen and (max-width: 480px) {
+  /* Further adjustments for even smaller screens */
+  .card {
+    padding: 10px;
+  }
+
+  /* Additional responsive styles as needed */
+}

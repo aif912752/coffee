@@ -6,10 +6,7 @@ module.exports = {
   },
   plugins: [],
 }
-module.exports = {
-  //...
-  plugins: [require("daisyui")],
-}
+
 
 // tailwind.config.js
 module.exports = {

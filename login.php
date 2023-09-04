@@ -61,7 +61,6 @@ form{
     top: 50%;
     right: 0;
     transform: translate(-50%,-50%);
-  
     border-radius: 10px;
     backdrop-filter: blur(10px);
     border: 2px solid rgba(255,255,255,0.1);
@@ -70,7 +69,6 @@ form{
 }
 form *{
     font-family: 'Poppins',sans-serif;
-    
     align-items: flex-end;
     color: #080710;
     letter-spacing: 0.5px;
@@ -176,10 +174,10 @@ button{
             $row = $stmt->fetch(PDO::FETCH_ASSOC);
             $_SESSION['username'] = $row['username'];
 
-            header("Location: index.php");
+            header("Location: shop.php");
             exit(); // Ensure that no more code is executed after redirection
         } else {
-            include('404.php');
+            include('404.html');
             exit(); // Ensure that no more code is executed after including 404.php
         }
     } else {
@@ -192,20 +190,13 @@ button{
 
 
 <body>
-<div class="hidden lg:flex lg:flex-1 justify-center ml-7 mt-5">
-    <a href="" class="text-m font-semibold leading-6 text-gray-900 flex items-center">
-        <span aria-hidden="true" class="mr-1">&larr;</span>
-        <span>Home</span>
-    </a>
-</div>
-
 
     <div class="background">
         <div class="shape"></div>
         <div class="shape"></div>
     </div>
 
-<img src="/img/lo.jpg" >
+<img src="img/lo.jpg" >
     <form method="post" name="login">
         <h3>Login Here</h3>
         <label for="username">Username</label>

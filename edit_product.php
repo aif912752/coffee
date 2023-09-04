@@ -31,7 +31,6 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
         // Get data from the form
         $product_name = $_POST['product_name'];
         $product_price = $_POST['product_price'];
-        $remaining = $_POST['remaining'];
         $id_type = $_POST['id_type']; // ข้อมูล "ประเภทสินค้า"
 
         // Check if an image was uploaded
@@ -49,13 +48,12 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
                     // The file has been uploaded successfully, now update the database
 
                     // Prepare SQL statement to update product information with the new image path
-                    $stmt = $conn->prepare("UPDATE product SET product_name = :product_name, product_price = :product_price, remaining = :remaining, id_type = :id_type, product_img = :product_img WHERE id_product = :id_product");
+                    $stmt = $conn->prepare("UPDATE product SET product_name = :product_name, product_price = :product_price, id_type = :id_type, product_img = :product_img WHERE id_product = :id_product");
 
                     // Bind parameters
                     $stmt->bindParam(':id_product', $id_product);
                     $stmt->bindParam(':product_name', $product_name);
                     $stmt->bindParam(':product_price', $product_price);
-                    $stmt->bindParam(':remaining', $remaining);
                     $stmt->bindParam(':id_type', $id_type);
                     $stmt->bindParam(':product_img', $target_file); // Save the new image path in the database
 
@@ -63,12 +61,12 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
                     if ($stmt->execute()) {
                         // Show Popup
                         echo "<script>
-        function showPopup() {
-            alert('แก้ไขข้อมูลสำเร็จ');
-            window.location.href = 'table_product.php';
-        }
-        showPopup();
-    </script>";
+                                 function showPopup() {
+                                alert('แก้ไขข้อมูลสำเร็จ');
+                                window.location.href = 'table_product.php';
+                            }
+                                showPopup();
+                                </script>";
                     } else {
                         // Show Error Message
                         echo "Error updating product information.";
@@ -79,13 +77,12 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
             }
         } else {
             // Prepare SQL statement to update product information without changing the image path
-            $stmt = $conn->prepare("UPDATE product SET product_name = :product_name, product_price = :product_price, remaining = :remaining, id_type = :id_type WHERE id_product = :id_product");
+            $stmt = $conn->prepare("UPDATE product SET product_name = :product_name, product_price = :product_price, id_type = :id_type WHERE id_product = :id_product");
 
             // Bind parameters
             $stmt->bindParam(':id_product', $id_product);
             $stmt->bindParam(':product_name', $product_name);
             $stmt->bindParam(':product_price', $product_price);
-            $stmt->bindParam(':remaining', $remaining);
             $stmt->bindParam(':id_type', $id_type);
 
             // Execute the update statement
@@ -105,8 +102,6 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
         }
     }
 }
-
-
 ?>
 <!-- Add the following JavaScript code at the end of your HTML file, before the closing </body> tag -->
 <script>
@@ -143,7 +138,7 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
         <div class="w-full rounded-xl bg-white p-4 shadow-2xl shadow-white/40">
             <!-- Update the form action to submit the data to the same page -->
             <form action="edit_product.php?id=<?php echo $id_product; ?>" method="post" enctype="multipart/form-data">
-                <div class="mb-4 grid grid-cols-2 gap-4">
+                <div class="mb-4 grid grid-cols-2 gap-4 my-5 mx-5">
                     <div class="flex flex-col">
                         <label for="product_name" class="mb-2 font-semibold">ชื่อสินค้า</label>
                         <!-- Pre-fill the product_name field with the fetched product data -->
@@ -155,12 +150,8 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
                         <input type="text" id="product_price" name="product_price" class="w-full max-w-[200px] rounded-lg border border-slate-200 px-2 py-1 hover:border-blue-500 focus:outline-none focus:ring focus:ring-blue-500/40 active:ring active:ring-blue-500/40" value="<?php echo $product['product_price']; ?>" />
                     </div>
                 </div>
-                <div class="mb-4 grid grid-cols-2 gap-4">
-                    <div class="mb-4 flex flex-col">
-                        <label for="remaining" class="mb-2 font-semibold">คงเหลือ</label>
-                        <!-- Pre-fill the remaining field with the fetched product data -->
-                        <input type="number" id="remaining" name="remaining" class="w-full max-w-[200px] rounded-lg border border-slate-200 px-2 py-1 hover:border-blue-500 focus:outline-none focus:ring focus:ring-blue-500/40 active:ring active:ring-blue-500/40" value="<?php echo $product['remaining']; ?>" />
-                    </div>
+                <div class="mb-4 grid grid-cols-2 gap-4 mx-5 my-5">
+                  
                     <div class="mb-4 flex flex-col">
                         <label for="type_name" class="mb-2 font-semibold">ประเภท</label>
                         <div class="flex gap-x-6">

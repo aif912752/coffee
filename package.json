@@ -6,8 +6,10 @@
   "dependencies": {
     "autoprefixer": "^10.4.14",
     "flowbite": "^1.8.1",
+    "jquery": "^3.7.0",
     "postcss": "^8.4.27",
-    "preline": "^1.9.0"
+    "preline": "^1.9.0",
+    "sweetalert2": "^11.7.22"
   },
   "name": "testhtml",
   "version": "1.0.0",
