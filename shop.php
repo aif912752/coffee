@@ -1,6 +1,15 @@
 <?php
+session_start(); // ต้องเรียก session_start() ทุกครั้งที่ต้องการเข้าถึงตัวแปร $_SESSION
 require_once('db.php');
+
+if (isset($_SESSION['username'])) {
+    $_SESSION['username'];
+    // ทำสิ่งอื่นๆ หลังจากแสดง username เช่น แสดงสินค้า ปุ่มออกจากระบบ เป็นต้น
+} else {
+    // ถ้าไม่มีการเข้าสู่ระบบ ให้ทำสิ่งที่คุณต้องการ ยกตัวอย่างเช่นแสดงแบบฟอร์มล็อกอิน
+}
 ?>
+
 <!DOCTYPE html>
 <html lang="en">
 
@@ -15,6 +24,8 @@ require_once('db.php');
 <!-- ไอคอน -->
 <script src="https://cdn.lordicon.com/bhenfmcm.js"></script>
 <script src="https://unpkg.com/boxicons@2.1.4/dist/boxicons.js"></script>
+
+<script src="product_alert.js"></script>
 
 <!-- tailwindcss -->
 <script src="https://cdn.tailwindcss.com"></script>
@@ -67,6 +78,15 @@ require_once('db.php');
         <button class="tablink text-black" onclick="openPage('All', this, '#7CFC00')" id="defaultOpen">ทั้งหมด</button>
         <button class="tablink text-black" onclick="openPage('Drink', this, '#7CFC00')">เครื่องดื่ม</button>
         <button class="tablink text-black" onclick="openPage('Bakery', this, '#7CFC00')">เบเกอรี่</button>
+
+
+
+        <div id="expiration-alert" class="bg-yellow-200 text-yellow-800 p-4 rounded-md shadow-lg mb-4" style="display: none;">
+    <p class="font-semibold">แจ้งเตือน: สินค้าใกล้หมดอายุ</p>
+    <p id="expiration-message"></p> <!-- ข้อความจะถูกแทนที่โดย JavaScript -->
+</div>
+
+
         <!-- ปุ่มคำนวณรวมยอดเงินทั้งหมด -->
         <div class="flex justify-end px-8 py-4">
             <button type="button" class="calculateButton  bg-yellow-200 relative text-black px-4 py-2 rounded-lg shadow-sm hover:bg-yellow-300 focus:outline-none focus:ring-2 focus:ring-yellow-400">
@@ -121,50 +141,43 @@ require_once('db.php');
             const totalPriceDiv = document.getElementById('totalPrice');
             const promotionProductsDiv = document.getElementById('promotionProducts');
             const orderButton = document.getElementById('orderButton');
-            const cancelButton = document.getElementById('cancelButton'); // ย้ายตรงนี้
-            let promotionDiscount = 0;
+            const cancelButton = document.getElementById('cancelButton');
 
+            let promotionDiscount = 0;
+            let total = 0;
+            let selectedPromotionId = []; // สร้างตัวแปร selectedPromotionId และกำหนดค่าเริ่มต้นเป็น null
 
             calculateButton.addEventListener('click', () => {
                 updateCartModal();
-                cartModal.classList.remove('hidden'); // เอาค่า hidden ออก
+                cartModal.classList.remove('hidden');
             });
 
             closeModal.addEventListener('click', () => {
-                cartModal.classList.add('hidden'); // ใส่ค่า hidden เพื่อซ่อน Modal
+                cartModal.classList.add('hidden');
             });
 
             window.addEventListener('click', event => {
                 if (event.target === cartModal) {
-                    cartModal.classList.add('hidden'); // ใส่ค่า hidden เพื่อซ่อน Modal
+                    cartModal.classList.add('hidden');
                 }
             });
 
             function updateCartItemQuantity(btn, act) {
-                console.log(btn)
-                const productId = btn.dataset.id
-                const index = cartItems.findIndex(p => p.id == productId)
+                const productId = btn.dataset.id;
+                const index = cartItems.findIndex(p => p.id == productId);
                 const qty = cartItems[index].qty;
-                console.log(index, productId)
                 if (act == 'plus') {
-                    cartItems[index].qty++
+                    cartItems[index].qty++;
                 }
-                if (act == 'minus') {
-                    if (qty >= 1) {
-                        cartItems[index].qty--
-                    }
+                if (act == 'minus' && qty >= 1) {
+                    cartItems[index].qty--;
                 }
-
                 updateCartModal();
-
             }
-            let totalPrice = 0;
 
             function updateCartModal() {
                 cartItemsDiv.innerHTML = '';
-
-
-                cartItems.forEach((p) => {
+                cartItems.forEach(p => {
                     const productId = parseFloat(p.id);
                     const productPrice = parseFloat(p.price);
                     const productName = p.product_name;
@@ -174,34 +187,28 @@ require_once('db.php');
                     const itemDiv = document.createElement('div');
                     itemDiv.className = 'cart-item';
                     itemDiv.innerHTML = `
-                    <li class="grid grid-cols-6 gap-2 border-b-1">
-                        <div class="col-span-1 self-center">
+                <li class="grid grid-cols-6 gap-2 border-b-1">
+                    <div class="col-span-1 self-center">
+                    </div>
+                    <div class="flex flex-col col-span-2 pt-2">
+                        <span class="cart-item-name text-gray-600 text-md font-semi-bold">${productName}</span>
+                    </div>
+                    <div class="col-span-2 pt-3">
+                        <div class="flex items-center text-sm justify-between">
+                            <button data-id="${productId}" class="decreaseQuantity px-2 bg-gray-300 hover:bg-gray-400 rounded focus:outline-none">-</button>
+                            <input type="number" class="quantityInput text-center w-12 " value="${quantity}">
+                            <button data-id="${productId}" class="increaseQuantity mr-2 px-2 bg-gray-300 hover:bg-gray-400 rounded focus:outline-none">+</button>
+                            <span class="cart-item-price ml-6 text-pink-400 font-semibold inline-block">$${itemTotalPrice.toFixed(2)}</span>
                         </div>
-
-                        <div class="flex flex-col col-span-2 pt-2">
-                            <span class="cart-item-name text-gray-600 text-md font-semi-bold">${productName}</span>
-                        </div>
-
-                        <div class="col-span-2 pt-3">
-                            <div class="flex items-center  text-sm justify-between">
-                                <button data-id="${productId}" class="decreaseQuantity px-2 bg-gray-300 hover:bg-gray-400 rounded focus:outline-none">-</button>
-                                    <input type="number" class="quantityInput text-center w-12 " value="${quantity}">
-                                <button data-id="${productId}" class="increaseQuantity mr-2 px-2 bg-gray-300 hover:bg-gray-400 rounded focus:outline-none">+</button>
-                                <span class="cart-item-price  ml-6 text-pink-400 font-semibold inline-block">$${itemTotalPrice.toFixed(2)}</span>
-                            </div>
-                        </div>
-                    </li>`;
-
+                    </div>
+                </li>`;
                     cartItemsDiv.appendChild(itemDiv);
-
                     const increaseButton = itemDiv.querySelector('.increaseQuantity');
                     const decreaseButton = itemDiv.querySelector('.decreaseQuantity');
                     const quantityInput = itemDiv.querySelector('.quantityInput');
-
                     increaseButton.addEventListener('click', (event) => {
-                        updateCartItemQuantity((event.target), 'plus');
+                        updateCartItemQuantity(event.target, 'plus');
                     });
-
                     decreaseButton.addEventListener('click', (event) => {
                         updateCartItemQuantity(event.target, 'minus');
                     });
@@ -209,98 +216,92 @@ require_once('db.php');
 
                 totalPriceDiv.textContent = `$${(totalPrice - promotionDiscount).toFixed(2)}`;
 
-                // เรียกใช้ API เพื่อดึงข้อมูลโปรโมชั่น
                 fetch('get_promotions.php')
                     .then(response => response.json())
                     .then(data => {
-                        console.log(data); // แสดงข้อมูลโปรโมชั่นใน console
-
-                        // ... ตรงนี้คือส่วนที่อัพเดตโปรโมชั่นบน modal
-                        const promotionProductsDiv = document.getElementById('promotionProducts');
-                        promotionProductsDiv.innerHTML = ''; // ล้างข้อมูลเดิม
-
+                        console.log(data);
+                       
                         const participatingProductName = cartItems.map(item => item.product_name);
-                        console.log(participatingProductName)
                         let promotionsEl = ``;
                         data.forEach(promotion => {
+                            
                             const promotionName = promotion.promotion_name;
                             const promotionType = promotion.discount_type;
                             const promotionAmount = parseFloat(promotion.discount_amount);
-
-                            // ตรวจสอบว่าโปรโมชั่นมีสินค้าที่ร่วมรายการกับตะกร้าหรือไม่
                             const hasParticipatingProducts = promotion.participating_products.some(item => participatingProductName.includes(item));
-
                             if (hasParticipatingProducts) {
+                                selectedPromotionId.push(promotion.id_promotion)
                                 promotionsEl += `
-                                <div class="flex justify-between py-4 text-gray-600">
-                                <span> ${promotionName}</span>`;
-
+                        <div class="flex justify-between py-4 text-gray-600">
+                            <span> ${promotionName}</span>`;
                                 if (promotionType === 'percentage') {
                                     promotionsEl += ` 
-                                    
-                                    <span class="font-semibold text-pink-500">- ส่วนลด ${promotionAmount}%</span>
-                                    </div>`;
+                                <span class="font-semibold text-pink-500">- ส่วนลด ${promotionAmount}%</span>
+                            </div>`;
                                 } else if (promotionType === 'amount') {
                                     promotionsEl += ` <span class="font-semibold text-pink-500">
-                                    - ส่วนลด $${promotionAmount.toFixed(2)} </span> </div>`;
+                                - ส่วนลด $${promotionAmount.toFixed(2)} </span> </div>`;
                                 }
-
                                 promotionsEl += `</p>`;
+          // กำหนดค่า selectedPromotionId ให้เป็น ID ของโปรโมชั่นที่มีสินค้าที่ร่วมรายการ
                             }
                         });
-                        promotionDiscount = calculatePromotionDiscount(data, participatingProductName);
 
+                        promotionDiscount = calculatePromotionDiscount(data);
+                        console.log('is', promotionDiscount);
                         promotionProductsDiv.innerHTML = promotionsEl;
-                        // คำนวณราคารวมทั้งหมดรวมโปรโมชั่น
+                        const totalPrice = currentTotal();
+                        total = totalPrice - promotionDiscount;
                         const totalAmount = totalPrice - promotionDiscount;
                         totalPriceDiv.textContent = `ราคารวมทั้งหมด: $${totalAmount.toFixed(2)}`;
                     })
                     .catch(error => console.error('Error fetching promotions:', error));
-
             }
 
-            function calculatePromotionDiscount(promotions, participatingProductNames) {
+            function currentTotal() {
+                return cartItems
+                    .map((p, i) => parseInt(p.qty) * parseFloat(p.price))
+                    .reduce((prev, current) => prev + current, 0);
+            }
+
+            function calculatePromotionDiscount(promotions) {
+                const participatingProductNames = cartItems.map(p => p.product_name);
                 let totalDiscount = 0;
 
                 promotions.forEach(promotion => {
                     const promotionType = promotion.discount_type;
                     const promotionAmount = parseFloat(promotion.discount_amount);
+                    let discountedAmount = 0;
 
-                    const hasParticipatingProducts = promotion.participating_products.some(item => participatingProductNames.includes(item));
+                    promotion.participating_products.forEach((n) => {
+                        const hasResult = participatingProductNames.indexOf(n);
 
-                    if (hasParticipatingProducts) {
-                        if (promotionType === 'percentage') {
-                            const totalProductPrice = cartItems.reduce((total, item) => {
-                                if (participatingProductNames.includes(item.product_name)) {
-                                    return total + (item.price * item.qty);
-                                }
-                                return total;
-                            }, 0);
-                            const discountedAmount = (totalProductPrice * (promotionAmount / 100));
-                            totalDiscount += discountedAmount;
-                        } else if (promotionType === 'amount') {
-                            totalDiscount += promotionAmount;
+                        if (hasResult >= 0) {
+                            if (promotionType === 'percentage') {
+                                const totalProductPrice = cartItems
+                                    .filter((v, index) => participatingProductNames[index] === n)
+                                    .map((p, i) => parseInt(p.qty) * parseFloat(p.price))
+                                    .reduce((prev, current) => prev + current, 0);
+                                discountedAmount += (totalProductPrice * (promotionAmount / 100));
+                            } else if (promotionType === 'amount') {
+                                discountedAmount += promotionAmount;
+                            }
                         }
-                    }
+                    });
+
+                    totalDiscount += discountedAmount;
                 });
 
                 return totalDiscount;
             }
 
-            //สั่งซื้อ
-            function calculateTotalAmount() {
-                console.log(promotionDiscount, totalPrice)
-                return totalPrice - promotionDiscount;
-            }
-
             orderButton.addEventListener('click', () => {
                 const orderData = {
                     cartItems: cartItems,
-                    totalPrice: calculateTotalAmount()
+                    totalPrice: total,
+                    id_promotion: selectedPromotionId
                 };
-
                 console.log(orderData);
-
                 fetch('save_order.php', {
                         method: 'POST',
                         headers: {
@@ -308,22 +309,32 @@ require_once('db.php');
                         },
                         body: JSON.stringify(orderData)
                     })
-                    .then(response => response)
+                    .then(response => response.json()) // แก้ไขนี้ให้รับข้อมูลเป็น JSON
                     .then(data => {
-                        if (data.status == 200) {
+                        if (data.success && data.invoice_id) { // ตรวจสอบค่า success ใน JSON
                             alert('สั่งซื้อสำเร็จแล้ว!');
+                            // ดึง ID ของใบเสร็จจากข้อมูลที่ส่งกลับหลังจากการสั่งซื้อ
+                            const invoiceId = data.invoice_id;
 
-                            window.location.reload();
+                            // เช็คให้แน่ใจว่ามีค่า invoiceId และไม่เป็น undefined หรือ null
+                            if (invoiceId) {
+                                // เด้งไปยังหน้ารายละเอียดการสั่งซื้อ
+                                window.open('order_details.php?invoice_id=' + invoiceId, '_blank');
+                                location.reload();
+                            } else {
+                                console.error('ไม่พบ invoice_id หรือค่าไม่ถูกต้อง');
+                            }
+                        } else {
+                            console.error('การสั่งซื้อไม่สำเร็จ');
                         }
                     })
                     .catch(error => console.error('Error saving order:', error));
             });
 
-
             // เพิ่ม event listener ในการคลิกปุ่ม "ยกเลิก"
             cancelButton.addEventListener('click', () => {
-                cartModal.classList.add('hidden'); // ซ่อน modal
-                window.location.reload(); // รีโหลดหน้าเว็บ
+                cartModal.classList.add('hidden');
+                window.location.reload();
             });
         </script>
 
@@ -461,15 +472,15 @@ require_once('db.php');
                     $stmt_lot->bindParam(':id_product', $productId);
                     $stmt_lot->execute();
                     $productRemaining = 0;
-                    
-                    if($stmt_lot->rowCount() >0){
-                       while($row_lot = $stmt_lot->fetch(PDO::FETCH_ASSOC)){
-                        $productRemaining += $row_lot['lot_number'];
-                       }
+
+                    if ($stmt_lot->rowCount() > 0) {
+                        while ($row_lot = $stmt_lot->fetch(PDO::FETCH_ASSOC)) {
+                            $productRemaining += $row_lot['lot_number'];
+                        }
                     }
-                   
+
                     // คำนวณจำนวนคงเหลือใหม่โดยใช้ฟังก์ชัน calculateRemainingQuantity
-                    
+
 
                 ?>
                     <!-- The card for bakery product -->
@@ -597,24 +608,32 @@ require_once('db.php');
         let cartItems = [];
 
         function addToCart(product) {
-            // const productId = product.
-            const productId = product.dataset.id
-            const productName = product.dataset.name
-            const productPrice = product.dataset.price
+            const productId = product.dataset.id;
+            const productName = product.dataset.name;
+            const productPrice = product.dataset.price;
 
-            const productIndex = cartItems.findIndex((items) => items.id == productId)
+            // หาค่าคงเหลือจาก div ที่มี class "grow-0"
+            const remainingElement = product.closest('.card').querySelector('.grow-0');
+            const remaining = parseInt(remainingElement.textContent.trim().split(' ')[1]); // แยกตัวเลขจากข้อความ "คงเหลือ: X"
 
-            if (productIndex < 0) {
-                cartItems.push({
-                    'id': productId,
-                    'qty': 1,
-                    'product_name': productName,
-                    'price': productPrice
-                })
-            } else if (productIndex >= 0) {
-                cartItems[productIndex].qty++
+            if (remaining > 0) {
+                const productIndex = cartItems.findIndex((items) => items.id == productId);
+
+                if (productIndex < 0) {
+                    cartItems.push({
+                        'id': productId,
+                        'qty': 1,
+                        'product_name': productName,
+                        'price': productPrice
+                    });
+                } else if (productIndex >= 0) {
+                    cartItems[productIndex].qty++;
+                }
+                updateCartItemCount();
+            } else {
+                // จำนวนคงเหลือเป็น 0, ไม่สามารถเพิ่มสินค้าลงในตะกร้าได้
+                alert('สินค้าหมดแล้ว');
             }
-            updateCartItemCount();
         }
 
         function updateCartItemCount() {

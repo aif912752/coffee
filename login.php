@@ -173,9 +173,10 @@ button{
             // Fetch the user data
             $row = $stmt->fetch(PDO::FETCH_ASSOC);
             $_SESSION['username'] = $row['username'];
+            $_SESSION['id_admin'] = $row['id_admin']; // เพิ่มบรรทัดนี้
 
             header("Location: shop.php");
-            exit(); // Ensure that no more code is executed after redirection
+            exit();
         } else {
             include('404.html');
             exit(); // Ensure that no more code is executed after including 404.php
