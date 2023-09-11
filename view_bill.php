@@ -2,24 +2,34 @@
 // เชื่อมต่อฐานข้อมูล
 require_once('db.php');
 
-// รับค่า ID ของใบเสร็จที่ต้องการแสดงรายละเอียด
-$invoiceId = $_GET['invoice_id'];
+// ตรวจสอบว่ามีค่า id_invoice ที่ถูกส่งมาทาง URL
+if (isset($_GET['id']) && !empty($_GET['id'])) {
+    // รับค่า ID ของใบเสร็จที่ต้องการแสดงรายละเอียด
+    $invoiceId = $_GET['id'];
 
-// สร้างคำสั่ง SQL เพื่อดึงข้อมูลใบเสร็จและ username
-$sql = "SELECT i.*, a.username AS username
-        FROM invoice i
-        JOIN admin a ON i.id_admin = a.id_admin
-        WHERE i.id_invoice = :invoice_id";
-$stmt = $conn->prepare($sql);
-$stmt->bindParam(':invoice_id', $invoiceId);
-$stmt->execute();
+    // สร้างคำสั่ง SQL เพื่อดึงข้อมูลใบเสร็จและ username
+    $sql = "SELECT i.*, a.username AS username
+            FROM invoice i
+            JOIN admin a ON i.id_admin = a.id_admin
+            WHERE i.id_invoice = :invoice_id";
+    $stmt = $conn->prepare($sql);
+    $stmt->bindParam(':invoice_id', $invoiceId);
+    $stmt->execute();
 
-// ตรวจสอบว่าพบข้อมูลหรือไม่
-if ($stmt->rowCount() > 0) {
-    $row = $stmt->fetch(PDO::FETCH_ASSOC);
+    // ตรวจสอบว่าพบข้อมูลหรือไม่
+    if ($stmt->rowCount() > 0) {
+        $row = $stmt->fetch(PDO::FETCH_ASSOC);
+    } else {
+        // หากไม่พบใบเสร็จที่ตรงกับ ID ที่ระบุใน URL
+        echo "ไม่พบใบเสร็จที่คุณร้องขอ";
+        exit;
+    }
+} else {
+    // หากไม่ได้ระบุ ID ใน URL
+    echo "กรุณาระบุ ID ใบเสร็จที่คุณต้องการดูรายละเอียด";
+    exit;
 }
 ?>
-
 <!DOCTYPE html>
 <!DOCTYPE html>
 <html lang="en">

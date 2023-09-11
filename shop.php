@@ -79,13 +79,12 @@ if (isset($_SESSION['username'])) {
         <button class="tablink text-black" onclick="openPage('Drink', this, '#7CFC00')">เครื่องดื่ม</button>
         <button class="tablink text-black" onclick="openPage('Bakery', this, '#7CFC00')">เบเกอรี่</button>
 
-
-
-        <div id="expiration-alert" class="bg-yellow-200 text-yellow-800 p-4 rounded-md shadow-lg mb-4" style="display: none;">
+        <div class="flex-row px-8 py-4">
+        <div id="expiration-alert" class="bg-yellow-200 text-yellow-800 p-4 mt-2 px-4 py-4 rounded-md shadow-lg mb-4 " style="display: none;">
     <p class="font-semibold">แจ้งเตือน: สินค้าใกล้หมดอายุ</p>
     <p id="expiration-message"></p> <!-- ข้อความจะถูกแทนที่โดย JavaScript -->
 </div>
-
+</div>
 
         <!-- ปุ่มคำนวณรวมยอดเงินทั้งหมด -->
         <div class="flex justify-end px-8 py-4">
