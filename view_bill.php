@@ -162,7 +162,7 @@ if (isset($_GET['id']) && !empty($_GET['id'])) {
         border-bottom: 1px solid rgba(16, 86, 82, .75);
         ;
         font-weight: 700;
-        font-size: 11px;
+        font-size: 16px;
         color: #000000;
     }
 
@@ -183,7 +183,7 @@ if (isset($_GET['id']) && !empty($_GET['id'])) {
     }
 
     .cart .steps .step span {
-        font-size: 13px;
+        font-size: 16px;
         font-weight: 600;
         color: #000000;
         margin-bottom: 8px;
@@ -191,7 +191,7 @@ if (isset($_GET['id']) && !empty($_GET['id'])) {
     }
 
     .cart .steps .step p {
-        font-size: 11px;
+        font-size: 16px;
         font-weight: 600;
         color: #000000;
     }
@@ -236,7 +236,7 @@ if (isset($_GET['id']) && !empty($_GET['id'])) {
         border: 0;
         font-style: normal;
         font-weight: 600;
-        font-size: 12px;
+        font-size: 16px;
         line-height: 15px;
         color: #000000;
     }
@@ -250,7 +250,7 @@ if (isset($_GET['id']) && !empty($_GET['id'])) {
     }
 
     .payments .details span:nth-child(odd) {
-        font-size: 12px;
+        font-size: 16px;
         font-weight: 600;
         color: #000000;
         margin: auto auto auto 0;
@@ -292,7 +292,7 @@ if (isset($_GET['id']) && !empty($_GET['id'])) {
         border: 1px solid rgb(16, 86, 82);
         ;
         color: #000000;
-        font-size: 13px;
+        font-size: 16px;
         font-weight: 600;
         transition: all 0.3s cubic-bezier(0.15, 0.83, 0.66, 1);
     }

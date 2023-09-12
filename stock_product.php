@@ -175,7 +175,7 @@ function is_expiring_soon($expiration_date) {
         <tbody class="divide-y divide-gray-100 border-t border-gray-100">
             <?php if (count($lot_data) > 0) : ?>
                 <?php foreach ($lot_data as $row) : ?>
-                    <tr class="hover:bg-gray-50 <?php echo (is_expiring_soon($row['lot_expiration'])) ? 'bg-red-100' : ''; ?>">
+                    <tr class="hover:bg-gray-50 <?php echo (is_expiring_soon($row['lot_expiration'])) ? 'bg-red-300' : ''; ?>">
                         <th class="flex gap-3 px-6 py-4 font-normal text-gray-900">
                             <div class="relative h-10 w-10">
                                 <img class="h-full w-full rounded-full object-cover object-center" src="<?php echo $row["product_img"]; ?>" />
