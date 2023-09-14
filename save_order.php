@@ -5,6 +5,7 @@ header("Content-Type: application/json");
 require_once('db.php');
 $data = json_decode(file_get_contents('php://input'));
 try {
+    date_default_timezone_set('Asia/Bangkok');
 
     // สามารถทำการประมวลผลข้อมูลและบันทึกลงในตารางใบเสร็จได้ตามความเหมาะสม
     $id_admin = $_SESSION['id_admin']; // รหัสผู้ดูแลระบบที่เข้าสู่ระบบ
